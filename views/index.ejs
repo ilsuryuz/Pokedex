@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>Pokedex</h2>
+        <form action="" method="">
+            <input type="submit" value="Add New Pokemen" />
+          </form>
+    </div>
+    <div class="icon">
+    <% for(let i = 0; i < data.length; i++) { %>
+        <div>
+          <h5><%=data[i].name%></h5>
+          <img src="<%=data[i].img%>" alt="<%=data[i].name%>">
+             <!--  ADD DELETE FORM HERE-->
+          <form action="" method="">
+            <input type="submit" value="DELETE" />
+          </form>
+          <!-- Add edit link here  -->
+          <a href="">Edit</a>
+    </div>
+        <% } %>
+    </div>
+</body>
+</html>
