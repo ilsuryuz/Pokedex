@@ -3,7 +3,7 @@ const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
 const Pokemon = require('./models/pokemon');
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // MIDDLEWARE
 app.use(express.urlencoded({ extended: false }));
@@ -11,19 +11,20 @@ app.use(express.urlencoded({ extended: false }));
 //use methodOverride.  We'll be adding a query parameter to our delete form named _method
 app.use(methodOverride("_method"))
 
-
+// styles
+app.use('/Public', express.static('Public'));
 app.listen(port, () => {
     console.log("epic")
 })
 
 // INDEX
 app.get('/Pokedex', (req, res) => {
-    res.render('index.ejs', { data: Pokemon });
+    res.render('index.ejs', { data: Pokemon, tabTitle: "Pokedex" });
 });
 
 // NEW
 app.get("/Pokedex/new", (req, res) => {
-    res.render("new.ejs")
+    res.render("new.ejs", {tabTitle: "New Pokemon"})
 })
 
 
@@ -37,11 +38,12 @@ app.delete("/Pokedex/:id", (req, res) => {
 // U
 app.get("/Pokedex/:id/edit/", (req, res) => {
     res.render("edit.ejs", {
-      editPoke: Pokemon[req.params.id],
-      index: req.params.id,
+        editPoke: Pokemon[req.params.id],
+        index: req.params.id,
+        tabTitle: "Edit Pokemon",
     }
     )
-  })
+})
 
 
 // CREATE
@@ -133,13 +135,16 @@ app.put("/Pokedex/:id", (req, res) => {
         }
 
     };
-    Pokemon[req.params.id] = editPoke 
-    res.redirect("/Pokedex/"+req.params.id) //redirect to the index page
-    , {}
-  })
+    Pokemon[req.params.id] = editPoke
+    res.redirect("/Pokedex/" + req.params.id) //redirect to the index page
+})
 
 // SHOW
 app.get('/Pokedex/:id', (req, res) => {
-    res.render('show.ejs', { data: Pokemon[req.params.id], indexOf: req.params.id});
+    res.render('show.ejs', { 
+        data: Pokemon[req.params.id],
+        indexOf: req.params.id,
+        tabTitle: Pokemon[req.params.id].name,
+    });
 });
 
