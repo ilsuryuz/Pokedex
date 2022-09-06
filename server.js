@@ -25,9 +25,29 @@ app.get('/Pokedex', (req, res) => {
 app.get("/Pokedex/new", (req, res) => {
     res.render("new.ejs")
 })
+
+
+// DELETE
+
+app.delete("/Pokedex/:id", (req, res) => {
+    Pokemon.splice(req.params.id, 1) //remove the item from the array
+    res.redirect("/Pokedex") //redirect back to index route
+})
+
+// U
+app.get("/Pokedex/:id/edit/", (req, res) => {
+    res.render("edit.ejs", {
+      editPoke: Pokemon[req.params.id],
+      index: req.params.id,
+    }
+    )
+  })
+
+
+// CREATE
 app.post("/Pokedex", (req, res) => {
     // make an array for type
-    let typeArray = req.body.type.split(', ')
+    let typeArray = req.body.type.split(',')
 
     // create new object
     const newPoke = {
@@ -61,7 +81,7 @@ app.post("/Pokedex", (req, res) => {
             dragon: "0",
             dark: "0",
             steel: "0"
-          },
+        },
         misc: {
             classification: req.body.classification
         }
@@ -71,16 +91,55 @@ app.post("/Pokedex", (req, res) => {
     res.redirect("/Pokedex")
 })
 
-// D
+// E
+app.put("/Pokedex/:id", (req, res) => {
+    let typeArray = req.body.type.split(',')
 
-app.delete("/Pokedex/:id", (req, res) => {
-    Pokemon.splice(req.params.id, 1) //remove the item from the array
-    res.redirect("/Pokedex") //redirect back to index route
+    // create new object to match keys in original data
+    const editPoke = {
+        name: req.body.name,
+        img: req.body.img,
+        id: req.body.id,
+        type: typeArray,
+        stats: {
+            hp: req.body.hp,
+            attack: req.body.attack,
+            defense: req.body.defense,
+            spattack: req.body.spattack,
+            spdefense: req.body.spdefense,
+            speed: req.body.speed
+        },
+        damages: {
+            normal: req.body.normal,
+            fire: req.body.fire,
+            water: req.body.water,
+            electric: req.body.electric,
+            grass: req.body.grass,
+            ice: req.body.ice,
+            fight: req.body.fight,
+            poison: req.body.poison,
+            ground: req.body.ground,
+            flying: req.body.flying,
+            psychic: req.body.psychic,
+            bug: req.body.bug,
+            rock: req.body.rock,
+            ghost: req.body.ghost,
+            dragon: req.body.dragon,
+            dark: req.body.dark,
+            steel: req.body.steel
+        },
+        misc: {
+            classification: req.body.classification
+        }
+
+    };
+    Pokemon[req.params.id] = editPoke 
+    res.redirect("/Pokedex/"+req.params.id) //redirect to the index page
+    , {}
   })
-
 
 // SHOW
 app.get('/Pokedex/:id', (req, res) => {
-    res.render('show.ejs', { data: Pokemon[req.params.id] });
+    res.render('show.ejs', { data: Pokemon[req.params.id], indexOf: req.params.id});
 });
 
